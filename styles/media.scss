@@ -1,0 +1,40 @@
+// media query
+$breakpoints: (
+  'xs': 'screen and (max-width: 480px)',
+  'sm': 'screen and (max-width: 768px)',
+  'md': 'screen and (max-width: 992px)',
+  'lg': 'screen and (max-width: 1160px)',
+  'xl': 'screen and (min-width: 1160px)'
+) !default;
+
+// 自适应相关的媒体查询mixin
+@mixin respond-to($breakpoint: 'sm') {
+  $query: map-get($breakpoints, $breakpoint);
+
+  @if not $query {
+    @error 'No value found for `#{$breakpoint}`.';
+  }
+
+  @media #{if(type-of($query) == 'string', unquote($query), inspect($query))} {
+    @content;
+  }
+}
+
+// 移动端的默认尺寸
+$defaultMobileWidth: 398 !default;
+
+// 适配 750px 的UI设计稿
+@function r($px) {
+  @return round($px / 750 * $defaultMobileWidth * 100) / 100 * 1px;
+}
+
+// 适配 1080px 的UI设计稿
+@function d($px) {
+  @return round($px / 1080 * $defaultMobileWidth * 100) / 100 * 1px;
+}
+
+// mobile unit transform
+@function v($px) {
+  // 保留三位小数
+  @return round($px / 1080 * 100000) / 1000 * 1vw;
+}
